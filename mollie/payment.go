@@ -4,27 +4,61 @@ import (
 	"fmt"
 	"gopkg.in/go-playground/validator.v9"
 	"net/url"
+	"time"
 )
 
 const endpoint = "payments"
 
 var validate = validator.New()
 
+type Address struct {
+	StreetAndNumber string `json:"streetAndNumber,omitempty"`
+	PostalCode      string `json:"postalCode,omitempty"`
+	City            string `json:"city,omitempty"`
+	Region          string `json:"region,omitempty"`
+	Country         string `json:"country,omitempty"`
+}
+
 type PaymentRequest struct {
-	Amount           map[string]string `json:"amount" validate:"required"`
-	Description      string            `json:"description" validate:"required"`
-	RedirectURL      string            `json:"redirectUrl" validate:"required"`
-	WebhookURL       string            `json:"webhookUrl" validate:"required"`
-	Locale           string            `json:"locale" `
-	Method           string            `json:"method"`
-	MethodParameters interface{}
-	Metadata         interface{}       `json:"metadata"`
-	SequenceType     string            `json:"sequenceType"`
-	CustomerId       string            `json:"customerId"`
-	MandateId        string            `json:"mandateId"`
+	Amount            map[string]string `json:"amount" validate:"required"`
+	Description       string            `json:"description" validate:"required"`
+	RedirectURL       string            `json:"redirectUrl" validate:"required"`
+	WebhookURL        string            `json:"webhookUrl" validate:"required"`
+	Method            string            `json:"method" validate:"required"`
+	Locale            string            `json:"locale,omitempty"`
+	Metadata          interface{}       `json:"metadata,omitempty"`
+	SequenceType      string            `json:"sequenceType,omitempty"`
+	CustomerId        string            `json:"customerId,omitempty"`
+	MandateId         string            `json:"mandateId,omitempty"`
+	BillingEmail      string            `json:"billingEmail,omitempty"`
+	DueDate           string            `json:"dueDate,omitempty"`
+	BillingAddress    Address           `json:"billingAddress,omitempty"`
+	ShippingAddress   Address           `json:"shippingAddress,omitempty"`
+	VoucherNumber     string            `json:"voucherNumber,omitempty"`
+	VoucherPin        string            `json:"voucherPin,omitempty"`
+	Issuer            string            `json:"issuer,omitempty"`
+	CustomerReference string            `json:"customerReference,omitempty"`
 }
 
 type PaymentResponse struct {
+	Resource         string            `json:"resource"`
+	ID               string            `json:"id"`
+	Mode             string            `json:"mode"`
+	CreatedAt        time.Time         `json:"createdAt"`
+	Amount           map[string]string `json:"amount"`
+	Description      string            `json:"description"`
+	Method           interface{}       `json:"method"`
+	Metadata         interface{}       `json:"metadata"`
+	Status           string            `json:"status"`
+	IsCancelable     bool              `json:"isCancelable"`
+	ExpiresAt        time.Time         `json:"expiresAt"`
+	Details          interface{}       `json:"details"`
+	ProfileID        string            `json:"profileId"`
+	SettlementAmount interface{}       `json:"settlementAmount"`
+	SequenceType     string            `json:"sequenceType"`
+	RedirectURL      string            `json:"redirectUrl"`
+	WebhookURL       string            `json:"webhookUrl"`
+	Links            interface{}       `json:"_links"`
 }
 
 func (c *Client) CreatePayment(p *PaymentRequest) (*PaymentResponse, error) {
@@ -54,7 +88,7 @@ type PaymentOptions struct {
 
 func (c *Client) GetPayment(id ID, options *PaymentOptions) (*PaymentResponse, error) {
 
-	paymentURL := fmt.Sprintf("%s%s/%s", c.baseURL, endpoint, id)
+	paymentURL := fmt.Sprintf("%s/%s", endpoint, id)
 
 	values := url.Values{}
 	if options != nil {
@@ -82,7 +116,7 @@ func (c *Client) GetPayment(id ID, options *PaymentOptions) (*PaymentResponse, e
 }
 
 func (c *Client) CancelPayment(id ID) (*PaymentResponse, error) {
-	paymentURL := fmt.Sprintf("%s%s/%s", c.baseURL, endpoint, id)
+	paymentURL := fmt.Sprintf("%s/%s", endpoint, id)
 
 	var r PaymentResponse
 	err := c.get(paymentURL, &r)
@@ -100,7 +134,7 @@ type PaymentsResponse struct {
 }
 
 func (c *Client) ListPayments(options *PaymentOptions) (*PaymentsResponse, error) {
-	paymentURL := fmt.Sprintf("%s%s", c.baseURL, endpoint)
+	paymentURL := fmt.Sprintf("%s", endpoint)
 
 	values := url.Values{}
 	if options != nil {
