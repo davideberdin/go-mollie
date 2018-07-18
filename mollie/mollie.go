@@ -16,12 +16,6 @@ type Client struct {
 	TestMode bool
 }
 
-type ID string
-
-func (id *ID) String() string {
-	return string(*id)
-}
-
 // Error represents an error returned by the Mollie API.
 type ErrorMollie struct {
 	Status int         `json:"status"`

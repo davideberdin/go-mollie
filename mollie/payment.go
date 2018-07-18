@@ -86,7 +86,7 @@ type PaymentOptions struct {
 	Limit            string // value: "limit"
 }
 
-func (c *Client) GetPayment(id ID, options *PaymentOptions) (*PaymentResponse, error) {
+func (c *Client) GetPayment(id string, options *PaymentOptions) (*PaymentResponse, error) {
 
 	paymentURL := fmt.Sprintf("%s/%s", endpoint, id)
 
@@ -115,7 +115,7 @@ func (c *Client) GetPayment(id ID, options *PaymentOptions) (*PaymentResponse, e
 	return &r, nil
 }
 
-func (c *Client) CancelPayment(id ID) (*PaymentResponse, error) {
+func (c *Client) CancelPayment(id string) (*PaymentResponse, error) {
 	paymentURL := fmt.Sprintf("%s/%s", endpoint, id)
 
 	var r PaymentResponse

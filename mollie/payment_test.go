@@ -26,6 +26,7 @@ func configuration() string {
 	return c.ApiKey
 }
 
+// TODO: Need to create mock functions without using the actual Mollie APIs
 func TestClient_CreatePayment(t *testing.T) {
 	apiKey := configuration()
 	c := NewClient(apiKey, true)
@@ -35,17 +36,13 @@ func TestClient_CreatePayment(t *testing.T) {
 			"currency": "EUR",
 			"value":    "100.00",
 		},
-		Description: "Testing Payment",
-		RedirectURL: "http://2e9fafad.ngrok.io",
-		WebhookURL:  "http://2e9fafad.ngrok.io",
-		Method:      "creditcard",
-		BillingAddress: Address{
-			StreetAndNumber: "Gustav Mahlerlaand 869",
-			PostalCode:      "1082MK",
-			City:            "Amsterdam",
-			Region:          "Noord Holland",
-			Country:         "NL",
-		},
+		Description:  "Testing Payment",
+		RedirectURL:  "http://2e9fafad.ngrok.io",
+		WebhookURL:   "http://2e9fafad.ngrok.io",
+		Method:       "banktransfer",
+		BillingEmail: "sloth@greeny.com",
+		DueDate:      "2018-09-12",
+		Locale:       "nl_NL",
 	}
 
 	r, err := c.CreatePayment(p)
@@ -54,5 +51,35 @@ func TestClient_CreatePayment(t *testing.T) {
 		os.Exit(1)
 	}
 
-	assert.Equal(t, r.Status, 201)
+	assert.Equal(t, r.Status, "open")
+	assert.Equal(t, r.Resource, "payment")
+	assert.Equal(t, r.Mode, "test")
+	assert.Equal(t, r.Description, "Testing Payment")
+	assert.Equal(t, r.Method, "banktransfer")
+}
+
+func TestClient_GetPayment(t *testing.T) {
+	apiKey := configuration()
+	c := NewClient(apiKey, true)
+
+	r, err := c.GetPayment("tr_GfdpAP8xnf", nil)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	assert.Equal(t, r.Status, "open")
+}
+
+func TestClient_CancelPayment(t *testing.T) {
+	apiKey := configuration()
+	c := NewClient(apiKey, true)
+
+	r, err := c.GetPayment("tr_GfdpAP8xnf", nil)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	assert.Equal(t, r.Status, "canceled")
 }
