@@ -55,7 +55,7 @@ func TestClient_CreatePayment(t *testing.T) {
 	assert.Equal(t, r.Status, "open")
 	assert.Equal(t, r.Resource, "payment")
 	assert.Equal(t, r.Mode, "test")
-	assert.Equal(t, r.Description, "Testing Payment")
+	assert.Equal(t, r.Description, "Test Payment")
 	assert.Equal(t, r.Method, "banktransfer")
 }
 
@@ -145,9 +145,7 @@ func TestClient_ListPayments(t *testing.T) {
 	// Create Object response
 	r := &PaymentsResponse{
 		Count: 1,
-		Embedded: struct {
-			Payments []PaymentResponse
-		}{
+		EmbeddedPayments: EmbeddedPayments{
 			Payments: payments,
 		},
 		Links: nil,

@@ -72,12 +72,14 @@ type RefundOptions struct {
 	Limit string
 }
 
+type EmbeddedRefunds struct {
+	Refunds []RefundResponse `json:"refunds"`
+}
+
 type RefundsResponse struct {
-	Count int `json:"count"`
-	Embedded struct {
-		Refunds []RefundResponse `json:"refunds"`
-	} `json:"_embedded"`
-	Links map[string]interface{} `json:"_links"`
+	Count           int                    `json:"count"`
+	EmbeddedRefunds EmbeddedRefunds        `json:"_embedded"`
+	Links           map[string]interface{} `json:"_links"`
 }
 
 func (c *Client) ListAllRefunds(options *RefundOptions) (*RefundsResponse, error) {

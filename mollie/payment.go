@@ -124,12 +124,14 @@ func (c *Client) CancelPayment(id string) (*PaymentResponse, error) {
 	return &r, nil
 }
 
+type EmbeddedPayments struct {
+	Payments []PaymentResponse `json:"payments"`
+}
+
 type PaymentsResponse struct {
-	Count int `json:"count"`
-	Embedded struct {
-		Payments []PaymentResponse `json:"payments"`
-	} `json:"_embedded"`
-	Links map[string]interface{} `json:"_links"`
+	Count            int                    `json:"count"`
+	EmbeddedPayments EmbeddedPayments       `json:"_embedded"`
+	Links            map[string]interface{} `json:"_links"`
 }
 
 func (c *Client) ListPayments(options *PaymentOptions) (*PaymentsResponse, error) {
