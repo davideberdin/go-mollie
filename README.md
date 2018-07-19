@@ -41,3 +41,11 @@ func main() {
     fmt.Println(r)
 }
 ```
+
+
+## Create documentation
+
+```bash
+$: cd mollie
+$: godoc -html . > ../doc/mollie.html 
+```
