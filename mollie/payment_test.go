@@ -2,35 +2,14 @@ package mollie
 
 import (
 	"testing"
-	"fmt"
-	"os"
-	"github.com/spf13/viper"
-	"log"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/h2non/gock.v1"
+	"net/http"
 )
 
-func configuration() string {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	var c struct {
-		ApiKey string
-	}
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
-	}
-	err := viper.Unmarshal(&c)
-	if err != nil {
-		log.Fatalf("unable to decode into struct, %v", err)
-	}
-	return c.ApiKey
-}
-
-// TODO: Need to create mock functions without using the actual Mollie APIs
 func TestClient_CreatePayment(t *testing.T) {
-	apiKey := configuration()
-	c := NewClient(apiKey, true)
 
+	// Create Object request
 	p := &PaymentRequest{
 		Amount: map[string]string{
 			"currency": "EUR",
@@ -45,11 +24,33 @@ func TestClient_CreatePayment(t *testing.T) {
 		Locale:       "nl_NL",
 	}
 
-	r, err := c.CreatePayment(p)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	// Create Object response
+	r := &PaymentResponse{
+		Resource: "payment",
+		ID:       "tr_WthPtuq48H",
+		Mode:     "test",
+		Amount: map[string]string{
+			"value":    "100.00",
+			"currency": "EUR",
+		},
+		Description: "Test Payment",
+		Method:      "banktransfer",
+		Status:      "open",
 	}
+
+	// Set interceptor
+	defer gock.Off()
+	gock.New(baseAddress).
+		Post("/payments").
+		MatchType("json").
+		JSON(p).
+		Reply(http.StatusCreated).
+		JSON(r)
+
+	c := NewClient("api-key", true)
+
+	r, err := c.CreatePayment(p)
+	assert.Equal(t, err, nil)
 
 	assert.Equal(t, r.Status, "open")
 	assert.Equal(t, r.Resource, "payment")
@@ -59,40 +60,110 @@ func TestClient_CreatePayment(t *testing.T) {
 }
 
 func TestClient_GetPayment(t *testing.T) {
-	apiKey := configuration()
-	c := NewClient(apiKey, true)
 
-	r, err := c.GetPayment("tr_GfdpAP8xnf", nil)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	// Create Object response
+	r := &PaymentResponse{
+		Resource: "payment",
+		ID:       "tr_WthPtuq48H",
+		Mode:     "test",
+		Amount: map[string]string{
+			"value":    "100.00",
+			"currency": "EUR",
+		},
+		Description: "Test Payment",
+		Method:      "banktransfer",
+		Status:      "open",
 	}
 
+	// Set interceptor
+	defer gock.Off()
+	gock.New(baseAddress).
+		Get("/payments/tr_WthPtuq48H").
+		Reply(http.StatusOK).
+		JSON(r)
+
+	c := NewClient("api-key", true)
+
+	r, err := c.GetPayment("tr_WthPtuq48H", nil)
+
+	assert.Equal(t, err, nil)
 	assert.Equal(t, r.Status, "open")
+	assert.Equal(t, r.ID, "tr_WthPtuq48H")
 }
 
 func TestClient_CancelPayment(t *testing.T) {
-	apiKey := configuration()
-	c := NewClient(apiKey, true)
 
-	r, err := c.GetPayment("tr_GfdpAP8xnf", nil)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	// Create Object response
+	r := &PaymentResponse{
+		Resource: "payment",
+		ID:       "tr_WthPtuq48H",
+		Mode:     "test",
+		Amount: map[string]string{
+			"value":    "100.00",
+			"currency": "EUR",
+		},
+		Description: "Test Payment",
+		Method:      "banktransfer",
+		Status:      "canceled",
 	}
 
+	// Set interceptor
+	defer gock.Off()
+	gock.New(baseAddress).
+		Get("/payments/tr_WthPtuq48H").
+		Reply(http.StatusOK).
+		JSON(r)
+
+	c := NewClient("api-key", true)
+
+	r, err := c.GetPayment("tr_WthPtuq48H", nil)
+
+	assert.Equal(t, err, nil)
 	assert.Equal(t, r.Status, "canceled")
+	assert.Equal(t, r.ID, "tr_WthPtuq48H")
 }
 
 func TestClient_ListPayments(t *testing.T) {
-	apiKey := configuration()
-	c := NewClient(apiKey, true)
 
-	r, err := c.ListPayments(nil)
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	payment := &PaymentResponse{
+		Resource: "payment",
+		ID:       "tr_WthPtuq48H",
+		Mode:     "test",
+		Amount: map[string]string{
+			"value":    "100.00",
+			"currency": "EUR",
+		},
+		Description: "Test Payment",
+		Method:      "banktransfer",
+		Status:      "canceled",
 	}
 
+	payments := make([]PaymentResponse, 1)
+
+	payments = append(payments, *payment)
+
+	// Create Object response
+	r := &PaymentsResponse{
+		Count: 1,
+		Embedded: struct {
+			Payments []PaymentResponse
+		}{
+			Payments: payments,
+		},
+		Links: nil,
+	}
+
+	// Set interceptor
+	defer gock.Off()
+	gock.New(baseAddress).
+		Get("/payments").
+		Reply(http.StatusOK).
+		JSON(r)
+
+	c := NewClient("api-key", true)
+
+	r, err := c.ListPayments(nil)
+
+	assert.Equal(t, err, nil)
 	assert.True(t, r.Count > 0)
 }
