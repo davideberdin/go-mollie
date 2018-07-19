@@ -2,14 +2,11 @@ package mollie
 
 import (
 	"fmt"
-	"gopkg.in/go-playground/validator.v9"
 	"net/url"
 	"time"
 )
 
-const endpoint = "payments"
-
-var validate = validator.New()
+const paymentsEndpoint = "payments"
 
 type Address struct {
 	StreetAndNumber string `json:"streetAndNumber,omitempty"`
@@ -67,7 +64,7 @@ func (c *Client) CreatePayment(p *PaymentRequest) (*PaymentResponse, error) {
 		return nil, err
 	}
 
-	paymentURL := fmt.Sprintf("%s%s", c.baseURL, endpoint)
+	paymentURL := fmt.Sprintf("%s", paymentsEndpoint)
 
 	var r PaymentResponse
 	err := c.post(paymentURL, p, &r)
@@ -88,7 +85,7 @@ type PaymentOptions struct {
 
 func (c *Client) GetPayment(id string, options *PaymentOptions) (*PaymentResponse, error) {
 
-	paymentURL := fmt.Sprintf("%s/%s", endpoint, id)
+	paymentURL := fmt.Sprintf("%s/%s", paymentsEndpoint, id)
 
 	values := url.Values{}
 	if options != nil {
@@ -116,7 +113,7 @@ func (c *Client) GetPayment(id string, options *PaymentOptions) (*PaymentRespons
 }
 
 func (c *Client) CancelPayment(id string) (*PaymentResponse, error) {
-	paymentURL := fmt.Sprintf("%s/%s", endpoint, id)
+	paymentURL := fmt.Sprintf("%s/%s", paymentsEndpoint, id)
 
 	var r PaymentResponse
 	err := c.get(paymentURL, &r)
@@ -128,13 +125,15 @@ func (c *Client) CancelPayment(id string) (*PaymentResponse, error) {
 }
 
 type PaymentsResponse struct {
-	Count    uint                         `json:"count"`
-	Embedded map[string][]PaymentResponse `json:"_embedded"`
-	Links    map[string]string            `json:"_links"`
+	Count int `json:"count"`
+	Embedded struct {
+		Payments []PaymentResponse `json:"payments"`
+	} `json:"_embedded"`
+	Links map[string]interface{} `json:"_links"`
 }
 
 func (c *Client) ListPayments(options *PaymentOptions) (*PaymentsResponse, error) {
-	paymentURL := fmt.Sprintf("%s", endpoint)
+	paymentURL := fmt.Sprintf("%s", paymentsEndpoint)
 
 	values := url.Values{}
 	if options != nil {

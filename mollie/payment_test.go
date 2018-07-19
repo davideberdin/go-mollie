@@ -83,3 +83,16 @@ func TestClient_CancelPayment(t *testing.T) {
 
 	assert.Equal(t, r.Status, "canceled")
 }
+
+func TestClient_ListPayments(t *testing.T) {
+	apiKey := configuration()
+	c := NewClient(apiKey, true)
+
+	r, err := c.ListPayments(nil)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	assert.True(t, r.Count > 0)
+}
