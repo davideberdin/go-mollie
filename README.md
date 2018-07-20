@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/davideberdin/go-mollie.svg?branch=master)](https://travis-ci.com/davideberdin/go-mollie) [![Go Report Card](https://goreportcard.com/badge/github.com/davideberdin/go-mollie)](https://goreportcard.com/report/github.com/davideberdin/go-mollie) 
+
 # Mollie Go SDK
 Mollie wrapper API written in Go.
 
@@ -40,12 +42,4 @@ func main() {
     
     fmt.Println(r)
 }
-```
-
-
-## Create documentation
-
-```bash
-$: cd mollie
-$: godoc -html . > ../doc/mollie.html 
 ```

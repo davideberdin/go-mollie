@@ -8,11 +8,13 @@ import (
 
 const refundsEndpoint = "refunds"
 
+// RefundRequest represents the object to create a Refund in Mollie API
 type RefundRequest struct {
 	Amount      map[string]string `json:"amount" validate:"required"`
 	Description string            `json:"description" validate:"required"`
 }
 
+// RefundResponse represents a convenient object for every response of the refunds endpoint from Mollie APIs
 type RefundResponse struct {
 	Resource    string            `json:"resource"`
 	ID          string            `json:"id"`
@@ -24,12 +26,13 @@ type RefundResponse struct {
 	Links       interface{}       `json:"_links"`
 }
 
-func (c *Client) CreateRefund(r *RefundRequest, paymentId string) (*RefundResponse, error) {
+// CreateRefund creates a Refund for a given payment
+func (c *Client) CreateRefund(r *RefundRequest, paymentID string) (*RefundResponse, error) {
 	if err := validate.Struct(r); err != nil {
 		return nil, err
 	}
 
-	refundURL := fmt.Sprintf("%s/%s/%s", paymentsEndpoint, paymentId, refundsEndpoint)
+	refundURL := fmt.Sprintf("%s/%s/%s", paymentsEndpoint, paymentID, refundsEndpoint)
 
 	var p RefundResponse
 	err := c.post(refundURL, r, &p)
@@ -40,9 +43,10 @@ func (c *Client) CreateRefund(r *RefundRequest, paymentId string) (*RefundRespon
 	return &p, nil
 }
 
-func (c *Client) GetRefund(paymentId, refundId string) (*RefundResponse, error) {
+// GetRefund returns a specific refund from a given payment and refund ids
+func (c *Client) GetRefund(paymentID, refundID string) (*RefundResponse, error) {
 
-	refundURL := fmt.Sprintf("%s/%s/%s/%s", paymentsEndpoint, paymentId, refundsEndpoint, refundId)
+	refundURL := fmt.Sprintf("%s/%s/%s/%s", paymentsEndpoint, paymentID, refundsEndpoint, refundID)
 
 	// TODO: Missing the Embed -> don't understand how it works
 
@@ -55,8 +59,9 @@ func (c *Client) GetRefund(paymentId, refundId string) (*RefundResponse, error) 
 	return &r, nil
 }
 
-func (c *Client) CancelRefund(paymentId, refundId string) (*RefundResponse, error) {
-	refundURL := fmt.Sprintf("%s/%s/%s/%s", paymentsEndpoint, paymentId, refundsEndpoint, refundId)
+// CancelRefund cancels a specific refund for a given payment id
+func (c *Client) CancelRefund(paymentID, refundID string) (*RefundResponse, error) {
+	refundURL := fmt.Sprintf("%s/%s/%s/%s", paymentsEndpoint, paymentID, refundsEndpoint, refundID)
 
 	var r RefundResponse
 	err := c.delete(refundURL, &r)
@@ -67,21 +72,25 @@ func (c *Client) CancelRefund(paymentId, refundId string) (*RefundResponse, erro
 	return &r, nil
 }
 
+// RefundOptions is a convenient struct to add query parametes when getting a refund(s)
 type RefundOptions struct {
 	From  string
 	Limit string
 }
 
+// EmbeddedRefunds is convenient struct for marshalling/unmarshalling when multiple Refunds
 type EmbeddedRefunds struct {
 	Refunds []RefundResponse `json:"refunds"`
 }
 
+// RefundsResponse is the object when asking for multiple refunds object
 type RefundsResponse struct {
 	Count           int                    `json:"count"`
 	EmbeddedRefunds EmbeddedRefunds        `json:"_embedded"`
 	Links           map[string]interface{} `json:"_links"`
 }
 
+// ListAllRefunds returns an object with all the reunds in your account
 func (c *Client) ListAllRefunds(options *RefundOptions) (*RefundsResponse, error) {
 	refundURL := fmt.Sprintf("%s", refundsEndpoint)
 
@@ -107,8 +116,9 @@ func (c *Client) ListAllRefunds(options *RefundOptions) (*RefundsResponse, error
 	return &r, nil
 }
 
-func (c *Client) ListRefundsOfPayment(options *RefundOptions, paymentId string) (*RefundsResponse, error) {
-	refundURL := fmt.Sprintf("%s/%s/%s", paymentsEndpoint, paymentId, refundsEndpoint)
+// ListRefundsOfPayment returns all the refunds for a given payment
+func (c *Client) ListRefundsOfPayment(options *RefundOptions, paymentID string) (*RefundsResponse, error) {
+	refundURL := fmt.Sprintf("%s/%s/%s", paymentsEndpoint, paymentID, refundsEndpoint)
 
 	values := url.Values{}
 	if options != nil {
