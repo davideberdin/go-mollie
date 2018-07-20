@@ -1,8 +1,8 @@
 package mollie
 
 import (
-	"time"
 	"fmt"
+	"time"
 )
 
 const chargebackEndpoint = "chargebacks"

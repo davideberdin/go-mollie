@@ -8,7 +8,7 @@ import (
 // For now let's keep it simple
 
 // NewClient creates the client that will interface with the Mollie APIs. Only ApiKey is supported at the moments
-func NewClient(apiKey string, testMode bool) (Client) {
+func NewClient(apiKey string, testMode bool) Client {
 	c := Client{
 		sling:    sling.New(),
 		baseURL:  baseAddress,

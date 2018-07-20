@@ -1,9 +1,9 @@
 package mollie
 
 import (
-	"time"
 	"fmt"
 	"net/url"
+	"time"
 )
 
 const refundsEndpoint = "refunds"
