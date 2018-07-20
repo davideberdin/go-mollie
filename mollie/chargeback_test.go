@@ -58,7 +58,7 @@ func TestClient_ListAllChargeBacks(t *testing.T) {
 	chargebacks = append(chargebacks, *chargeback)
 
 	// Create Object response
-	r := &ChargebacskResponse{
+	r := &ChargebacksResponse{
 		Count: 1,
 		EmbeddedChargeback: EmbeddedChargeback{
 			Chargeback: chargebacks,
@@ -97,7 +97,7 @@ func TestClient_ListChargebacksOfPayment(t *testing.T) {
 	chargebacks = append(chargebacks, *chargeback)
 
 	// Create Object response
-	r := &ChargebacskResponse{
+	r := &ChargebacksResponse{
 		Count: 1,
 		EmbeddedChargeback: EmbeddedChargeback{
 			Chargeback: chargebacks,

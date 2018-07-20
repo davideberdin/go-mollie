@@ -18,7 +18,7 @@ type Client struct {
 	TestMode bool
 }
 
-// Error represents an error returned by the Mollie API.
+// ErrorMollie represents an error returned by the Mollie API.
 type ErrorMollie struct {
 	Status int         `json:"status"`
 	Title  string      `json:"title"`

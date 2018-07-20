@@ -34,8 +34,8 @@ type PaymentRequest struct {
 	Locale            string      `json:"locale,omitempty"`
 	Metadata          interface{} `json:"metadata,omitempty"`
 	SequenceType      string      `json:"sequenceType,omitempty"`
-	CustomerId        string      `json:"customerId,omitempty"`
-	MandateId         string      `json:"mandateId,omitempty"`
+	CustomerID        string      `json:"customerId,omitempty"`
+	MandateID         string      `json:"mandateId,omitempty"`
 	BillingEmail      string      `json:"billingEmail,omitempty"`
 	DueDate           string      `json:"dueDate,omitempty"`
 	BillingAddress    Address     `json:"billingAddress,omitempty"`

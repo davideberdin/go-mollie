@@ -20,9 +20,10 @@ type ChargebackResponse struct {
 	Links            map[string]interface{} `json:"_links"`
 }
 
-func (c *Client) GetChargeBack(paymentId, chargebackId string) (*ChargebackResponse, error) {
+// GetChargeBack retrieve the charge back object given both a payment id and the chargeback id
+func (c *Client) GetChargeBack(paymentID, chargebackID string) (*ChargebackResponse, error) {
 
-	chargebackURL := fmt.Sprintf("%s/%s/%s/%s", paymentsEndpoint, paymentId, chargebackEndpoint, chargebackId)
+	chargebackURL := fmt.Sprintf("%s/%s/%s/%s", paymentsEndpoint, paymentID, chargebackEndpoint, chargebackID)
 
 	var r ChargebackResponse
 	err := c.get(chargebackURL, &r)
@@ -33,20 +34,24 @@ func (c *Client) GetChargeBack(paymentId, chargebackId string) (*ChargebackRespo
 	return &r, nil
 }
 
+// EmbeddedChargeback is the object used for marshelling correctly the response
+// when asking for more than one chargeback at the time
 type EmbeddedChargeback struct {
 	Chargeback []ChargebackResponse `json:"chargebacks"`
 }
 
-type ChargebacskResponse struct {
+// ChargebacksResponse is an object returned when multiple Chargeback objects are requested
+type ChargebacksResponse struct {
 	Count              int                    `json:"count"`
 	EmbeddedChargeback EmbeddedChargeback     `json:"_embedded"`
 	Links              map[string]interface{} `json:"_links"`
 }
 
-func (c *Client) ListAllChargeBacks() (*ChargebacskResponse, error) {
+// ListAllChargeBacks returns all the chargebacks in your account
+func (c *Client) ListAllChargeBacks() (*ChargebacksResponse, error) {
 	chargebackURL := fmt.Sprintf("%s", refundsEndpoint)
 
-	var r ChargebacskResponse
+	var r ChargebacksResponse
 	err := c.get(chargebackURL, &r)
 	if err != nil {
 		return nil, err
@@ -55,10 +60,11 @@ func (c *Client) ListAllChargeBacks() (*ChargebacskResponse, error) {
 	return &r, nil
 }
 
-func (c *Client) ListChargeBacksOfPayment(paymentId string) (*ChargebacskResponse, error) {
-	chargebackURL := fmt.Sprintf("%s/%s/%s", paymentsEndpoint, paymentId, refundsEndpoint)
+// ListChargeBacksOfPayment returns all the chargebacks of a specific payment
+func (c *Client) ListChargeBacksOfPayment(paymentID string) (*ChargebacksResponse, error) {
+	chargebackURL := fmt.Sprintf("%s/%s/%s", paymentsEndpoint, paymentID, refundsEndpoint)
 
-	var r ChargebacskResponse
+	var r ChargebacksResponse
 	err := c.get(chargebackURL, &r)
 	if err != nil {
 		return nil, err
