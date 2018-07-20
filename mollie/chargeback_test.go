@@ -1,10 +1,10 @@
 package mollie
 
 import (
-	"testing"
+	"github.com/stretchr/testify/assert"
 	"gopkg.in/h2non/gock.v1"
 	"net/http"
-	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestClient_GetChargeBack(t *testing.T) {
@@ -17,7 +17,7 @@ func TestClient_GetChargeBack(t *testing.T) {
 			Value:    "100.00",
 			Currency: "EUR",
 		},
-		PaymentID:   "tr_WDqYK6vllg",
+		PaymentID: "tr_WDqYK6vllg",
 		SettlementAmount: Amount{
 			Value:    "100.00",
 			Currency: "EUR",
@@ -50,7 +50,7 @@ func TestClient_ListAllChargeBacks(t *testing.T) {
 			Value:    "100.00",
 			Currency: "EUR",
 		},
-		PaymentID:   "tr_WDqYK6vllg",
+		PaymentID: "tr_WDqYK6vllg",
 	}
 
 	chargebacks := make([]ChargebackResponse, 1)
@@ -89,7 +89,7 @@ func TestClient_ListChargebacksOfPayment(t *testing.T) {
 			Value:    "100.00",
 			Currency: "EUR",
 		},
-		PaymentID:   "tr_WDqYK6vllg",
+		PaymentID: "tr_WDqYK6vllg",
 	}
 
 	chargebacks := make([]ChargebackResponse, 1)

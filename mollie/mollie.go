@@ -7,6 +7,7 @@ import (
 )
 
 const baseAddress = "https://api.mollie.com/v2/"
+
 var validate = validator.New()
 
 // Client is a client for working with the Mollie API.
