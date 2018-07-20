@@ -7,11 +7,8 @@ import (
 
 const chargebackEndpoint = "chargebacks"
 
-type Amount struct {
-	Currency string `json:"currency"`
-	Value    string `json:"value"`
-}
-
+// ChargebackResponse defines the objecy for every response from the Mollie APIs regarding chargebacks
+// https://docs.mollie.com/reference/v2/chargebacks-api/get-chargeback
 type ChargebackResponse struct {
 	Resource         string                 `json:"resource"`
 	ID               string                 `json:"id"`

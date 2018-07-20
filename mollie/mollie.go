@@ -27,10 +27,12 @@ type ErrorMollie struct {
 	Links  interface{} `json:"_links"`
 }
 
+// Error string reformat
 func (e ErrorMollie) Error() string {
 	return fmt.Sprintf("mollie: %d %s %s", e.Status, e.Title, e.Detail)
 }
 
+// post makes a POST request to the specified Mollie endpoint
 func (c *Client) post(url string, body interface{}, result interface{}) error {
 	errorMollie := new(ErrorMollie)
 	_, err := c.sling.Post(url).BodyJSON(body).Receive(result, errorMollie)
@@ -43,6 +45,7 @@ func (c *Client) post(url string, body interface{}, result interface{}) error {
 	return nil
 }
 
+// get makes a GET request to the specified Mollie endpoint
 func (c *Client) get(url string, result interface{}) error {
 	errorMollie := new(ErrorMollie)
 	_, err := c.sling.Get(url).Receive(result, errorMollie)
@@ -55,6 +58,7 @@ func (c *Client) get(url string, result interface{}) error {
 	return nil
 }
 
+// delete makes a DELETE request to the specified Mollie endpoint
 func (c *Client) delete(url string, result interface{}) error {
 	errorMollie := new(ErrorMollie)
 	_, err := c.sling.Delete(url).Receive(result, errorMollie)

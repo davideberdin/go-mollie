@@ -60,14 +60,18 @@
 				
 			
 				
-				<dd><a href="#ChargeBack">type ChargeBack</a></dd>
+				<dd><a href="#Amount">type Amount</a></dd>
 				
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#ChargeBack.GetChargeBack">func (c *ChargeBack) GetChargeBack() (string, error)</a></dd>
+			
 				
-					
-					<dd>&nbsp; &nbsp; <a href="#ChargeBack.ListChargeBacks">func (c *ChargeBack) ListChargeBacks() (string, error)</a></dd>
+				<dd><a href="#ChargebackResponse">type ChargebackResponse</a></dd>
+				
+				
+			
+				
+				<dd><a href="#ChargebacskResponse">type ChargebacskResponse</a></dd>
+				
 				
 			
 				
@@ -90,19 +94,43 @@
 					<dd>&nbsp; &nbsp; <a href="#Client.CreateRefund">func (c *Client) CreateRefund(r *RefundRequest, paymentId string) (*RefundResponse, error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Client.GetChargeBack">func (c *Client) GetChargeBack(paymentId, chargebackId string) (*ChargebackResponse, error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Client.GetPayment">func (c *Client) GetPayment(id string, options *PaymentOptions) (*PaymentResponse, error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Client.GetRefund">func (c *Client) GetRefund(paymentId, refundId string) (*RefundResponse, error)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Client.ListAllChargeBacks">func (c *Client) ListAllChargeBacks() (*ChargebacskResponse, error)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Client.ListAllRefunds">func (c *Client) ListAllRefunds(options *RefundOptions) (*RefundsResponse, error)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Client.ListChargeBacksOfPayment">func (c *Client) ListChargeBacksOfPayment(paymentId string) (*ChargebacskResponse, error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Client.ListPayments">func (c *Client) ListPayments(options *PaymentOptions) (*PaymentsResponse, error)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Client.ListRefundsOfPayment">func (c *Client) ListRefundsOfPayment(options *RefundOptions, paymentId string) (*RefundsResponse, error)</a></dd>
+				
+			
+				
+				<dd><a href="#EmbeddedChargeback">type EmbeddedChargeback</a></dd>
+				
+				
+			
+				
+				<dd><a href="#EmbeddedPayments">type EmbeddedPayments</a></dd>
+				
+				
+			
+				
+				<dd><a href="#EmbeddedRefunds">type EmbeddedRefunds</a></dd>
+				
 				
 			
 				
@@ -168,8 +196,6 @@
 			
 				<a href="/src/target/chargeback.go">chargeback.go</a>
 			
-				<a href="/src/target/method.go">method.go</a>
-			
 				<a href="/src/target/mollie.go">mollie.go</a>
 			
 				<a href="/src/target/payment.go">payment.go</a>
@@ -225,10 +251,13 @@
 		
 			
 			
-			<h2 id="Address">type <a href="/src/target/payment.go?s=91:376#L1">Address</a>
+			<h2 id="Address">type <a href="/src/target/payment.go?s=136:421#L2">Address</a>
 				<a class="permalink" href="#Address">&#xb6;</a>
 			</h2>
-			
+			<p>
+Address describes where the payee resides
+</p>
+
 			<pre>type Address struct {
 <span id="Address.StreetAndNumber"></span>    StreetAndNumber <a href="/pkg/builtin/#string">string</a> `json:&#34;streetAndNumber,omitempty&#34;`
 <span id="Address.PostalCode"></span>    PostalCode      <a href="/pkg/builtin/#string">string</a> `json:&#34;postalCode,omitempty&#34;`
@@ -251,12 +280,13 @@
 		
 			
 			
-			<h2 id="ChargeBack">type <a href="/src/target/chargeback.go?s=16:57#L1">ChargeBack</a>
-				<a class="permalink" href="#ChargeBack">&#xb6;</a>
+			<h2 id="Amount">type <a href="/src/target/chargeback.go?s=85:174#L1">Amount</a>
+				<a class="permalink" href="#Amount">&#xb6;</a>
 			</h2>
 			
-			<pre>type ChargeBack struct {
-<span id="ChargeBack.Client"></span>    Client <a href="#Client">Client</a>
+			<pre>type Amount struct {
+<span id="Amount.Currency"></span>    Currency <a href="/pkg/builtin/#string">string</a> `json:&#34;currency&#34;`
+<span id="Amount.Value"></span>    Value    <a href="/pkg/builtin/#string">string</a> `json:&#34;value&#34;`
 }</pre>
 
 			
@@ -270,25 +300,58 @@
 			
 
 			
-				
-				<h3 id="ChargeBack.GetChargeBack">func (*ChargeBack) <a href="/src/target/chargeback.go?s=59:111#L1">GetChargeBack</a>
-					<a class="permalink" href="#ChargeBack.GetChargeBack">&#xb6;</a>
-				</h3>
-				<pre>func (c *<a href="#ChargeBack">ChargeBack</a>) GetChargeBack() (<a href="/pkg/builtin/#string">string</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-				
-				
-				
-				
+		
 			
-				
-				<h3 id="ChargeBack.ListChargeBacks">func (*ChargeBack) <a href="/src/target/chargeback.go?s=133:187#L1">ListChargeBacks</a>
-					<a class="permalink" href="#ChargeBack.ListChargeBacks">&#xb6;</a>
-				</h3>
-				<pre>func (c *<a href="#ChargeBack">ChargeBack</a>) ListChargeBacks() (<a href="/pkg/builtin/#string">string</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-				
-				
-				
-				
+			
+			<h2 id="ChargebackResponse">type <a href="/src/target/chargeback.go?s=176:684#L5">ChargebackResponse</a>
+				<a class="permalink" href="#ChargebackResponse">&#xb6;</a>
+			</h2>
+			
+			<pre>type ChargebackResponse struct {
+<span id="ChargebackResponse.Resource"></span>    Resource         <a href="/pkg/builtin/#string">string</a>                 `json:&#34;resource&#34;`
+<span id="ChargebackResponse.ID"></span>    ID               <a href="/pkg/builtin/#string">string</a>                 `json:&#34;id&#34;`
+<span id="ChargebackResponse.Amount"></span>    Amount           <a href="#Amount">Amount</a>                 `json:&#34;amount&#34;`
+<span id="ChargebackResponse.SettlementAmount"></span>    SettlementAmount <a href="#Amount">Amount</a>                 `json:&#34;settlementAmount&#34;`
+<span id="ChargebackResponse.CreatedAt"></span>    CreatedAt        <a href="/pkg/time/">time</a>.<a href="/pkg/time/#Time">Time</a>              `json:&#34;createdAt&#34;`
+<span id="ChargebackResponse.ReversedAt"></span>    ReversedAt       interface{}            `json:&#34;reversedAt&#34;`
+<span id="ChargebackResponse.PaymentID"></span>    PaymentID        <a href="/pkg/builtin/#string">string</a>                 `json:&#34;paymentId&#34;`
+<span id="ChargebackResponse.Links"></span>    Links            map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;_links&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="ChargebacskResponse">type <a href="/src/target/chargeback.go?s=1097:1311#L33">ChargebacskResponse</a>
+				<a class="permalink" href="#ChargebacskResponse">&#xb6;</a>
+			</h2>
+			
+			<pre>type ChargebacskResponse struct {
+<span id="ChargebacskResponse.Count"></span>    Count              <a href="/pkg/builtin/#int">int</a>                    `json:&#34;count&#34;`
+<span id="ChargebacskResponse.EmbeddedChargeback"></span>    EmbeddedChargeback <a href="#EmbeddedChargeback">EmbeddedChargeback</a>     `json:&#34;_embedded&#34;`
+<span id="ChargebacskResponse.Links"></span>    Links              map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;_links&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
 			
 		
 			
@@ -315,22 +378,29 @@ Client is a client for working with the Mollie API.
 
 			
 				
-				<h3 id="NewClient">func <a href="/src/target/auth.go?s=127:180#L1">NewClient</a>
+				<h3 id="NewClient">func <a href="/src/target/auth.go?s=241:294#L1">NewClient</a>
 					<a class="permalink" href="#NewClient">&#xb6;</a>
 				</h3>
 				<pre>func NewClient(apiKey <a href="/pkg/builtin/#string">string</a>, testMode <a href="/pkg/builtin/#bool">bool</a>) <a href="#Client">Client</a></pre>
-				
+				<p>
+NewClient creates the client that will interface with the Mollie APIs. Only ApiKey is supported at the moments
+</p>
+
 				
 				
 			
 
 			
 				
-				<h3 id="Client.CancelPayment">func (*Client) <a href="/src/target/payment.go?s=3905:3972#L105">CancelPayment</a>
+				<h3 id="Client.CancelPayment">func (*Client) <a href="/src/target/payment.go?s=4927:4994#L118">CancelPayment</a>
 					<a class="permalink" href="#Client.CancelPayment">&#xb6;</a>
 				</h3>
 				<pre>func (c *<a href="#Client">Client</a>) CancelPayment(id <a href="/pkg/builtin/#string">string</a>) (*<a href="#PaymentResponse">PaymentResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-				
+				<p>
+CancelPayment cancel the payment with specific id. Not all the payments can be canceled.
+ref: <a href="https://docs.mollie.com/reference/v2/payments-api/cancel-payment">https://docs.mollie.com/reference/v2/payments-api/cancel-payment</a>
+</p>
+
 				
 				
 				
@@ -346,11 +416,15 @@ Client is a client for working with the Mollie API.
 				
 			
 				
-				<h3 id="Client.CreatePayment">func (*Client) <a href="/src/target/payment.go?s=2682:2757#L51">CreatePayment</a>
+				<h3 id="Client.CreatePayment">func (*Client) <a href="/src/target/payment.go?s=3231:3306#L58">CreatePayment</a>
 					<a class="permalink" href="#Client.CreatePayment">&#xb6;</a>
 				</h3>
 				<pre>func (c *<a href="#Client">Client</a>) CreatePayment(p *<a href="#PaymentRequest">PaymentRequest</a>) (*<a href="#PaymentResponse">PaymentResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-				
+				<p>
+CreatePayment creates an actual payment object in Mollie. After this call you can see it in the Mollie Dashboard
+ref: <a href="https://docs.mollie.com/reference/v2/payments-api/create-payment">https://docs.mollie.com/reference/v2/payments-api/create-payment</a>
+</p>
+
 				
 				
 				
@@ -366,11 +440,25 @@ Client is a client for working with the Mollie API.
 				
 			
 				
-				<h3 id="Client.GetPayment">func (*Client) <a href="/src/target/payment.go?s=3257:3346#L76">GetPayment</a>
+				<h3 id="Client.GetChargeBack">func (*Client) <a href="/src/target/chargeback.go?s=686:777#L16">GetChargeBack</a>
+					<a class="permalink" href="#Client.GetChargeBack">&#xb6;</a>
+				</h3>
+				<pre>func (c *<a href="#Client">Client</a>) GetChargeBack(paymentId, chargebackId <a href="/pkg/builtin/#string">string</a>) (*<a href="#ChargebackResponse">ChargebackResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="Client.GetPayment">func (*Client) <a href="/src/target/payment.go?s=4114:4203#L87">GetPayment</a>
 					<a class="permalink" href="#Client.GetPayment">&#xb6;</a>
 				</h3>
 				<pre>func (c *<a href="#Client">Client</a>) GetPayment(id <a href="/pkg/builtin/#string">string</a>, options *<a href="#PaymentOptions">PaymentOptions</a>) (*<a href="#PaymentResponse">PaymentResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
-				
+				<p>
+GetPayment gets a Payment object given the payment id from Mollie
+ref: <a href="https://docs.mollie.com/reference/v2/payments-api/get-payment">https://docs.mollie.com/reference/v2/payments-api/get-payment</a>
+</p>
+
 				
 				
 				
@@ -386,7 +474,17 @@ Client is a client for working with the Mollie API.
 				
 			
 				
-				<h3 id="Client.ListAllRefunds">func (*Client) <a href="/src/target/refund.go?s=1929:2010#L73">ListAllRefunds</a>
+				<h3 id="Client.ListAllChargeBacks">func (*Client) <a href="/src/target/chargeback.go?s=1313:1380#L39">ListAllChargeBacks</a>
+					<a class="permalink" href="#Client.ListAllChargeBacks">&#xb6;</a>
+				</h3>
+				<pre>func (c *<a href="#Client">Client</a>) ListAllChargeBacks() (*<a href="#ChargebacskResponse">ChargebacskResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				
+				
+				
+				
+			
+				
+				<h3 id="Client.ListAllRefunds">func (*Client) <a href="/src/target/refund.go?s=2018:2099#L75">ListAllRefunds</a>
 					<a class="permalink" href="#Client.ListAllRefunds">&#xb6;</a>
 				</h3>
 				<pre>func (c *<a href="#Client">Client</a>) ListAllRefunds(options *<a href="#RefundOptions">RefundOptions</a>) (*<a href="#RefundsResponse">RefundsResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -396,17 +494,30 @@ Client is a client for working with the Mollie API.
 				
 			
 				
-				<h3 id="Client.ListPayments">func (*Client) <a href="/src/target/payment.go?s=4339:4420#L125">ListPayments</a>
-					<a class="permalink" href="#Client.ListPayments">&#xb6;</a>
+				<h3 id="Client.ListChargeBacksOfPayment">func (*Client) <a href="/src/target/chargeback.go?s=1555:1644#L51">ListChargeBacksOfPayment</a>
+					<a class="permalink" href="#Client.ListChargeBacksOfPayment">&#xb6;</a>
 				</h3>
-				<pre>func (c *<a href="#Client">Client</a>) ListPayments(options *<a href="#PaymentOptions">PaymentOptions</a>) (*<a href="#PaymentsResponse">PaymentsResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<pre>func (c *<a href="#Client">Client</a>) ListChargeBacksOfPayment(paymentId <a href="/pkg/builtin/#string">string</a>) (*<a href="#ChargebacskResponse">ChargebacskResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
 				
 				
 				
 				
 			
 				
-				<h3 id="Client.ListRefundsOfPayment">func (*Client) <a href="/src/target/refund.go?s=2431:2536#L98">ListRefundsOfPayment</a>
+				<h3 id="Client.ListPayments">func (*Client) <a href="/src/target/payment.go?s=5729:5810#L144">ListPayments</a>
+					<a class="permalink" href="#Client.ListPayments">&#xb6;</a>
+				</h3>
+				<pre>func (c *<a href="#Client">Client</a>) ListPayments(options *<a href="#PaymentOptions">PaymentOptions</a>) (*<a href="#PaymentsResponse">PaymentsResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+ListPayments retrieve all the payments of your account
+</p>
+
+				
+				
+				
+			
+				
+				<h3 id="Client.ListRefundsOfPayment">func (*Client) <a href="/src/target/refund.go?s=2520:2625#L100">ListRefundsOfPayment</a>
 					<a class="permalink" href="#Client.ListRefundsOfPayment">&#xb6;</a>
 				</h3>
 				<pre>func (c *<a href="#Client">Client</a>) ListRefundsOfPayment(options *<a href="#RefundOptions">RefundOptions</a>, paymentId <a href="/pkg/builtin/#string">string</a>) (*<a href="#RefundsResponse">RefundsResponse</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
@@ -414,6 +525,76 @@ Client is a client for working with the Mollie API.
 				
 				
 				
+			
+		
+			
+			
+			<h2 id="EmbeddedChargeback">type <a href="/src/target/chargeback.go?s=1007:1095#L29">EmbeddedChargeback</a>
+				<a class="permalink" href="#EmbeddedChargeback">&#xb6;</a>
+			</h2>
+			
+			<pre>type EmbeddedChargeback struct {
+<span id="EmbeddedChargeback.Chargeback"></span>    Chargeback []<a href="#ChargebackResponse">ChargebackResponse</a> `json:&#34;chargebacks&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="EmbeddedPayments">type <a href="/src/target/payment.go?s=5298:5376#L132">EmbeddedPayments</a>
+				<a class="permalink" href="#EmbeddedPayments">&#xb6;</a>
+			</h2>
+			<p>
+EmbeddedPayments is the object used for marshelling correctly the response
+when asking for more than one payment at the time
+</p>
+
+			<pre>type EmbeddedPayments struct {
+<span id="EmbeddedPayments.Payments"></span>    Payments []<a href="#PaymentResponse">PaymentResponse</a> `json:&#34;payments&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="EmbeddedRefunds">type <a href="/src/target/refund.go?s=1739:1813#L65">EmbeddedRefunds</a>
+				<a class="permalink" href="#EmbeddedRefunds">&#xb6;</a>
+			</h2>
+			
+			<pre>type EmbeddedRefunds struct {
+<span id="EmbeddedRefunds.Refunds"></span>    Refunds []<a href="#RefundResponse">RefundResponse</a> `json:&#34;refunds&#34;`
+}</pre>
+
+			
+
+			
+
+			
+			
+			
+
+			
+
 			
 		
 			
@@ -457,10 +638,14 @@ Error represents an error returned by the Mollie API.
 		
 			
 			
-			<h2 id="PaymentOptions">type <a href="/src/target/payment.go?s=2994:3255#L68">PaymentOptions</a>
+			<h2 id="PaymentOptions">type <a href="/src/target/payment.go?s=3712:3973#L77">PaymentOptions</a>
 				<a class="permalink" href="#PaymentOptions">&#xb6;</a>
 			</h2>
-			
+			<p>
+PaymentOptions are the options that can be passed as query parameters when getting a Payment(s)
+ref: <a href="https://docs.mollie.com/reference/v2/payments-api/get-payment">https://docs.mollie.com/reference/v2/payments-api/get-payment</a>
+</p>
+
 			<pre>type PaymentOptions struct {
 <span id="PaymentOptions.IncludeQrCode"></span>    IncludeQrCode    <a href="/pkg/builtin/#string">string</a> <span class="comment">// value: &#34;details.qrCode&#34;</span>
 <span id="PaymentOptions.EmbedRefunds"></span>    EmbedRefunds     <a href="/pkg/builtin/#string">string</a> <span class="comment">// value: &#34;refunds&#34;</span>
@@ -483,10 +668,14 @@ Error represents an error returned by the Mollie API.
 		
 			
 			
-			<h2 id="PaymentRequest">type <a href="/src/target/payment.go?s=378:1667#L9">PaymentRequest</a>
+			<h2 id="PaymentRequest">type <a href="/src/target/payment.go?s=574:1863#L12">PaymentRequest</a>
 				<a class="permalink" href="#PaymentRequest">&#xb6;</a>
 			</h2>
-			
+			<p>
+PaymentRequest describe the object necessary to create a Payment in Mollie
+ref: <a href="https://docs.mollie.com/reference/v2/payments-api/create-payment">https://docs.mollie.com/reference/v2/payments-api/create-payment</a>
+</p>
+
 			<pre>type PaymentRequest struct {
 <span id="PaymentRequest.Amount"></span>    Amount            map[<a href="/pkg/builtin/#string">string</a>]<a href="/pkg/builtin/#string">string</a> `json:&#34;amount&#34; validate:&#34;required&#34;`
 <span id="PaymentRequest.Description"></span>    Description       <a href="/pkg/builtin/#string">string</a>            `json:&#34;description&#34; validate:&#34;required&#34;`
@@ -522,10 +711,14 @@ Error represents an error returned by the Mollie API.
 		
 			
 			
-			<h2 id="PaymentResponse">type <a href="/src/target/payment.go?s=1669:2680#L30">PaymentResponse</a>
+			<h2 id="PaymentResponse">type <a href="/src/target/payment.go?s=2029:3040#L35">PaymentResponse</a>
 				<a class="permalink" href="#PaymentResponse">&#xb6;</a>
 			</h2>
-			
+			<p>
+PaymentResponse describes the object obtained in the response from every Payment operation
+ref: <a href="https://docs.mollie.com/reference/v2/payments-api/get-payment">https://docs.mollie.com/reference/v2/payments-api/get-payment</a>
+</p>
+
 			<pre>type PaymentResponse struct {
 <span id="PaymentResponse.Resource"></span>    Resource         <a href="/pkg/builtin/#string">string</a>            `json:&#34;resource&#34;`
 <span id="PaymentResponse.ID"></span>    ID               <a href="/pkg/builtin/#string">string</a>            `json:&#34;id&#34;`
@@ -561,16 +754,17 @@ Error represents an error returned by the Mollie API.
 		
 			
 			
-			<h2 id="PaymentsResponse">type <a href="/src/target/payment.go?s=4145:4337#L117">PaymentsResponse</a>
+			<h2 id="PaymentsResponse">type <a href="/src/target/payment.go?s=5464:5669#L137">PaymentsResponse</a>
 				<a class="permalink" href="#PaymentsResponse">&#xb6;</a>
 			</h2>
-			
+			<p>
+PaymentsResponse is an object returned when multiple Payment objects are requested
+</p>
+
 			<pre>type PaymentsResponse struct {
-<span id="PaymentsResponse.Count"></span>    Count    <a href="/pkg/builtin/#int">int</a> `json:&#34;count&#34;`
-<span id="PaymentsResponse.Embedded"></span>    Embedded struct {
-        Payments []<a href="#PaymentResponse">PaymentResponse</a> `json:&#34;payments&#34;`
-    } `json:&#34;_embedded&#34;`
-<span id="PaymentsResponse.Links"></span>    Links map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;_links&#34;`
+<span id="PaymentsResponse.Count"></span>    Count            <a href="/pkg/builtin/#int">int</a>                    `json:&#34;count&#34;`
+<span id="PaymentsResponse.EmbeddedPayments"></span>    EmbeddedPayments <a href="#EmbeddedPayments">EmbeddedPayments</a>       `json:&#34;_embedded&#34;`
+<span id="PaymentsResponse.Links"></span>    Links            map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;_links&#34;`
 }</pre>
 
 			
@@ -662,16 +856,14 @@ Error represents an error returned by the Mollie API.
 		
 			
 			
-			<h2 id="RefundsResponse">type <a href="/src/target/refund.go?s=1739:1927#L65">RefundsResponse</a>
+			<h2 id="RefundsResponse">type <a href="/src/target/refund.go?s=1815:2016#L69">RefundsResponse</a>
 				<a class="permalink" href="#RefundsResponse">&#xb6;</a>
 			</h2>
 			
 			<pre>type RefundsResponse struct {
-<span id="RefundsResponse.Count"></span>    Count    <a href="/pkg/builtin/#int">int</a> `json:&#34;count&#34;`
-<span id="RefundsResponse.Embedded"></span>    Embedded struct {
-        Refunds []<a href="#RefundResponse">RefundResponse</a> `json:&#34;refunds&#34;`
-    } `json:&#34;_embedded&#34;`
-<span id="RefundsResponse.Links"></span>    Links map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;_links&#34;`
+<span id="RefundsResponse.Count"></span>    Count           <a href="/pkg/builtin/#int">int</a>                    `json:&#34;count&#34;`
+<span id="RefundsResponse.EmbeddedRefunds"></span>    EmbeddedRefunds <a href="#EmbeddedRefunds">EmbeddedRefunds</a>        `json:&#34;_embedded&#34;`
+<span id="RefundsResponse.Links"></span>    Links           map[<a href="/pkg/builtin/#string">string</a>]interface{} `json:&#34;_links&#34;`
 }</pre>
 
 			

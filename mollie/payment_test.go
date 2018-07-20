@@ -11,9 +11,9 @@ func TestClient_CreatePayment(t *testing.T) {
 
 	// Create Object request
 	p := &PaymentRequest{
-		Amount: map[string]string{
-			"currency": "EUR",
-			"value":    "100.00",
+		Amount: Amount{
+			Currency: "EUR",
+			Value:    "100.00",
 		},
 		Description:  "Testing Payment",
 		RedirectURL:  "http://2e9fafad.ngrok.io",
@@ -29,9 +29,9 @@ func TestClient_CreatePayment(t *testing.T) {
 		Resource: "payment",
 		ID:       "tr_WthPtuq48H",
 		Mode:     "test",
-		Amount: map[string]string{
-			"value":    "100.00",
-			"currency": "EUR",
+		Amount: Amount{
+			Currency: "EUR",
+			Value:    "100.00",
 		},
 		Description: "Test Payment",
 		Method:      "banktransfer",
@@ -66,9 +66,9 @@ func TestClient_GetPayment(t *testing.T) {
 		Resource: "payment",
 		ID:       "tr_WthPtuq48H",
 		Mode:     "test",
-		Amount: map[string]string{
-			"value":    "100.00",
-			"currency": "EUR",
+		Amount: Amount{
+			Currency: "EUR",
+			Value:    "100.00",
 		},
 		Description: "Test Payment",
 		Method:      "banktransfer",
@@ -98,9 +98,9 @@ func TestClient_CancelPayment(t *testing.T) {
 		Resource: "payment",
 		ID:       "tr_WthPtuq48H",
 		Mode:     "test",
-		Amount: map[string]string{
-			"value":    "100.00",
-			"currency": "EUR",
+		Amount: Amount{
+			Currency: "EUR",
+			Value:    "100.00",
 		},
 		Description: "Test Payment",
 		Method:      "banktransfer",
@@ -129,9 +129,9 @@ func TestClient_ListPayments(t *testing.T) {
 		Resource: "payment",
 		ID:       "tr_WthPtuq48H",
 		Mode:     "test",
-		Amount: map[string]string{
-			"value":    "100.00",
-			"currency": "EUR",
+		Amount: Amount{
+			Currency: "EUR",
+			Value:    "100.00",
 		},
 		Description: "Test Payment",
 		Method:      "banktransfer",
